@@ -49,14 +49,14 @@ export default function PlateStack3D({
   if (progress <= 0.5) {
     // Phase 1 — séparation
     const p = progress * 2;
-    spread = p * 0.3;
+    spread = p * 0.39;
     middleOffset = 0;
     tilt = p * 0.04;
     baseRotation = p * Math.PI * 0.35;
   } else if (progress <= 0.88) {
     // Phase 2 — retour vers position de repos
     const p = (progress - 0.5) / 0.38; // 0→1
-    spread = (1 - p) * 0.3;
+    spread = (1 - p) * 0.39;
     middleOffset = 0;
     tilt = (1 - p) * 0.04;
     baseRotation = (1 - p) * Math.PI * 0.35;

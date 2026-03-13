@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useEffect } from "react";
+import { useFrame, invalidate } from "@react-three/fiber";
 import * as THREE from "three";
 import { usePatternTexture } from "./PatternMaterial";
 import { PatternType } from "@/lib/types";
@@ -25,7 +26,7 @@ const WALL = 0.028;
 const GAP = 0.005;
 const LIP = 0.012;
 
-export const NEST_OVERLAP = 0.06;
+export const NEST_OVERLAP = 0.15;
 
 // Heights — stacked total ≈ 0.50
 export const HEIGHTS = {
@@ -84,6 +85,52 @@ export default function PlateModel({
 }: PlateModelProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const texture = usePatternTexture(pattern);
+
+  // Transition animation state
+  const transitionRef = useRef({
+    active: false,
+    progress: 0,
+    prevPattern: pattern,
+  });
+
+  // Trigger animation when pattern changes
+  useEffect(() => {
+    if (transitionRef.current.prevPattern !== pattern) {
+      transitionRef.current.active = true;
+      transitionRef.current.progress = 0;
+      transitionRef.current.prevPattern = pattern;
+      invalidate(); // kick-start the render loop in demand mode
+    }
+  }, [pattern]);
+
+  // Store base props in a ref so useFrame can access them
+  const propsRef = useRef({ positionY, rotationY, tiltX });
+  propsRef.current = { positionY, rotationY, tiltX };
+
+  useFrame((_, delta) => {
+    const t = transitionRef.current;
+    const mesh = meshRef.current;
+    if (!mesh) return;
+
+    if (t.active) {
+      t.progress += delta * 2.5; // ~0.4s animation
+
+      if (t.progress >= 1) {
+        t.active = false;
+        t.progress = 0;
+      }
+    }
+
+    // Apply base props + animated offsets
+    const bounce = t.active ? Math.sin(t.progress * Math.PI) : 0;
+    const { positionY: py, rotationY: ry, tiltX: tx } = propsRef.current;
+
+    mesh.position.y = py + bounce * 0.12;
+    mesh.rotation.set(tx, ry + bounce * Math.PI * 0.5, 0);
+    mesh.scale.setScalar(1 + bounce * 0.06);
+
+    if (t.active) invalidate();
+  });
 
   const geometry = useMemo(() => {
     const profile = createPlateProfile(type);

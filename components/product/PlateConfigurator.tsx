@@ -77,10 +77,10 @@ function ConfigRow({
         <ArrowButton direction="left" onClick={onPrev} />
         <div className="flex items-center gap-2 w-32 justify-center">
           <div
-            className="h-4 w-4 rounded-full border border-border"
+            className="h-4 w-4 rounded-full border border-border transition-colors duration-300"
             style={{ backgroundColor: patternMap[pattern].colors.primary }}
           />
-          <span className="text-sm font-medium">{patternMap[pattern].name}</span>
+          <span className="text-sm font-medium transition-opacity duration-200">{patternMap[pattern].name}</span>
         </div>
         <ArrowButton direction="right" onClick={onNext} />
       </div>
