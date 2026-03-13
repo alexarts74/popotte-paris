@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Popote Paris
+
+Site e-commerce pour **Popote Paris**, marque d'assiettes empilables en 3 strates avec motifs interchangeables. Design français, artisanat moderne.
+
+## Concept
+
+Chaque assiette est composée de 3 couches superposables (bottom, middle, top) avec des motifs personnalisables : Uni, Floral, Geometrique, Raye. Les assiettes sont disponibles a l'unite ou en lots (pack de 4, pack de 6).
+
+Le site propose un configurateur 3D interactif permettant de visualiser les combinaisons de motifs en temps reel.
+
+## Tech Stack
+
+- **Framework** : Next.js 16 (App Router, React 19)
+- **Langage** : TypeScript
+- **Styling** : Tailwind CSS v4
+- **3D** : Three.js + React Three Fiber + Drei
+- **Animations** : GSAP
+- **State** : Zustand (panier persiste en localStorage)
+- **Fonts** : Cormorant Garamond (titres) + DM Sans (corps)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Installation des dependances
+npm install
+
+# Lancer le serveur de dev
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Commande | Description |
+|---|---|
+| `npm run dev` | Serveur de developpement |
+| `npm run build` | Build de production |
+| `npm run start` | Serveur de production |
+| `npm run lint` | Linting ESLint |
 
-## Learn More
+## Structure du projet
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  page.tsx              # Homepage avec hero 3D
+  produits/page.tsx     # Catalogue produits
+  products/[slug]/      # Fiche produit avec configurateur
+  histoire/page.tsx     # Histoire de la marque
+  merci/page.tsx        # Confirmation de commande
+components/
+  three/                # Scenes 3D (PlateScene, PlateModel, PlateStack3D)
+  hero/                 # Section hero animee
+  sections/             # Sections de page (Concept, About, ProductGrid)
+  product/              # Detail produit et configurateur
+  cart/                 # Panier (drawer + items)
+  layout/               # Header, Footer
+  ui/                   # Composants UI reutilisables
+lib/
+  data/                 # Donnees produits et motifs
+  store/                # Store Zustand (panier)
+  animations/           # Configuration GSAP
+  types.ts              # Types TypeScript
+  theme.tsx             # Provider de theme (light/dark)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Produits
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Nom | Motifs | Prix unitaire |
+|---|---|---|
+| Classique Blanc | Uni / Uni / Uni | 45 EUR |
+| Jardin Fleuri | Uni / Floral / Floral | 55 EUR |
+| Art Deco | Uni / Geometrique / Geometrique | 55 EUR |
+| Marin | Uni / Raye / Raye | 55 EUR |
+| Contraste | Uni / Geometrique / Floral | 60 EUR |
+| Elegance | Uni / Raye / Floral | 60 EUR |
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Projet prive.
